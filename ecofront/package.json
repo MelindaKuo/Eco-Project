@@ -1,6 +1,6 @@
 {
   "name": "ecoproj_",
-  "main": "expo-router/entry",
+  "main": "./app/(tabs)/screens/App.tsx",
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
@@ -17,7 +17,8 @@
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
     "@react-native-community/blur": "^4.4.1",
-    "@react-navigation/native": "^6.0.2",
+    "@react-navigation/native": "^6.1.18",
+    "@react-navigation/native-stack": "^6.11.0",
     "@react-navigation/stack": "^6.4.1",
     "expo": "~51.0.28",
     "expo-blur": "~13.0.2",

@@ -1,11 +1,22 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Button, StyleSheet } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-const SignUpScreen = ({ navigation }) => {
+type SignUpScreenProps = {
+  navigation: StackNavigationProp<any, any>;
+};
+
+const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text>Sign Up Screen</Text>
-      <Button title="Back" onPress={() => navigation.goBack()} />
+      {/* Add your signup form here */}
+      <Button
+        title="Create Account"
+        onPress={() => navigation.reset({
+          index: 0,
+          routes: [{ name: 'Home' }],  // Make sure 'Home' matches the name in Stack.Screen
+        })}
+      />
     </View>
   );
 };

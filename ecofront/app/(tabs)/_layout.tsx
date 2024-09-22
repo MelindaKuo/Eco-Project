@@ -12,7 +12,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
+        // headerShown: false,
         tabBarStyle: {
           backgroundColor: '#6DB6EC', // Set your desired background color
           borderTopWidth: 0, // Remove the default border

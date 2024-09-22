@@ -52,8 +52,7 @@ const styles = StyleSheet.create({
   },
   text: {
     position: 'absolute', // Position text over the image
-    bottom: 10,
-    left: 10,
+    justifyContent: 'center',
     color: 'white', // Ensure text is visible
   },
   absolute: {

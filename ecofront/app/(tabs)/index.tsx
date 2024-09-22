@@ -4,7 +4,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import {Widget} from '@/components/Widget';
 
-export default function HomeScreen() {
+export function HomeScreen() {
   return (
     
     <ParallaxScrollView headerBackgroundColor={{ light: '#FFFFFF', dark: '#1D3D47' }}>
@@ -18,12 +18,24 @@ export default function HomeScreen() {
               text = "Fact"
         />
 
-        <Widget
-            source={require('../../assets/images/trash bac.jpg')}
-            width={340}
-            height={150}
-            text="Second widget!"
-        />
+        <View >
+
+            <Widget
+                source={require('../../assets/images/trash bac.jpg')}
+                width={340}
+                height={150}
+                text="Second widget!"
+            />
+            <View style = {styles.miniTaskWidget}>
+            <Widget
+                source = {require('../../assets/images/whitebackground.jpg')}
+                width = {300}
+                height = {120}
+                text = "Throw Away 10 Pieces of Trash"
+                />
+            </View>
+        </View>
+
         <View style = {styles.holder}>
           <Widget
               source={require('../../assets/images/whitebackground.jpg')}
@@ -77,12 +89,6 @@ export default function HomeScreen() {
             height={150}
             text="Second widget!"
         />
-
-
-        
-
-      
-      
       </ThemedView> 
 
     </ParallaxScrollView>
@@ -94,6 +100,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     gap: 25,
+    marginTop: 50,
   },
   stepContainer: {
     gap: 8,
@@ -120,6 +127,12 @@ const styles = StyleSheet.create({
     width: '100%', // Makes sure it uses the full width
     gap: 17, // Optional: add some padding
   },
+  miniTaskWidget: {
+    position: "absolute",
+    top: 15,
+    left: 19,
+    
+  },
   holder:{
     shadowColor: '#6DB6EC',
     shadowOffset: {
@@ -132,3 +145,5 @@ const styles = StyleSheet.create({
   }
 
 });
+
+export default HomeScreen

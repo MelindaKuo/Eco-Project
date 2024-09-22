@@ -1,83 +1,78 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+// import React from "react";
+// import styled from "styled-components";
 
-// Define the props type
-interface RecentCollectionsProps {
-    description: string;
-    points: string;
-}
+// interface AchievementCardProps {
+//   icon: string;
+//   title: string;
+//   points: number;
+//   imageSrc: string;
+// }
 
-const RecentCollections: React.FC<RecentCollectionsProps> = ({ description, points }) => {
-    return (
-        <View style={styles.recentCollection}>
-            <View style={styles.recycleIcon} />
-            <View style={styles.collectionInfo}>
-                <Text style={styles.description}>{description}</Text>
-                <Text style={styles.points}>{points}</Text>
-            </View>
-        </View>
-    );
-};
+// const AchievementCard: React.FC<AchievementCardProps> = ({ icon, title, points, imageSrc }) => {
+//   return (
+//     <Card>
+//       <IconWrapper>{icon}</IconWrapper>
+//       <AchievementInfo>
+//         <Title>{title}</Title>
+//         <Points>{points} points</Points>
+//       </AchievementInfo>
+//       <BackgroundImage src={imageSrc} alt="" aria-hidden="true" />
+//     </Card>
+//   );
+// };
 
-const Holder: React.FC = () => {
-    return (
-        <View style={styles.holder}>
-            <View style={styles.recentCollections}>
-                <RecentCollections description="Picked up plastic bottles" points="10 points" />
-                <RecentCollections description="Collected aluminum cans" points="8 points" />
-                <RecentCollections description="Gathered glass bottles" points="12 points" />
-            </View>
-            <View style={styles.divider} />
-        </View>
-    );
-};
+// const Card = styled.article`
+//   position: relative;
+//   display: flex;
+//   align-items: center;
+//   gap: 8px;
+//   color: #000;
+//   justify-content: center;
+//   padding: 9px 0;
+//   font: 400 14px/1 Roboto, sans-serif;
+// `;
 
-const styles = StyleSheet.create({
-    holder: {
-        width: 300, // Adjust as needed
-        height: 200, // Adjust as needed
-        borderRadius: 15,
-        elevation: 5, // Shadow effect for Android
-        shadowColor: '#000', // Shadow effect for iOS
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        padding: 16,
-        backgroundColor: 'white',
-    },
-    recentCollections: {
-        flexDirection: 'column',
-    },
-    recentCollection: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical: 8,
-    },
-    recycleIcon: {
-        width: 40, // Adjust size as needed
-        height: 40, // Adjust size as needed
-        backgroundColor: 'lightgrey',
-        borderRadius: 20,
-        marginRight: 8,
-        // You can add an image background here if desired
-    },
-    collectionInfo: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        flexGrow: 1,
-    },
-    description: {
-        flexGrow: 1,
-    },
-    points: {
-        marginLeft: 8,
-        fontWeight: 'bold',
-    },
-    divider: {
-        height: 1,
-        backgroundColor: 'lightgrey',
-        marginTop: 16,
-    },
-});
+// const IconWrapper = styled.div`
+//   border-radius: 16px;
+//   background-color: rgba(0, 0, 0, 0.05);
+//   font-size: 20px;
+//   text-align: center;
+//   line-height: 1.6;
+//   width: 32px;
+//   height: 32px;
+//   padding: 0 6px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// `;
 
-export default Holder;
+// const AchievementInfo = styled.div`
+//   flex: 1;
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+// `;
+
+// const Title = styled.h3`
+//   margin: 0;
+//   font-weight: 400;
+// `;
+
+// const Points = styled.span`
+//   font-weight: 500;
+//   text-align: right;
+// `;
+
+// const BackgroundImage = styled.img`
+//   aspect-ratio: 250;
+//   object-fit: contain;
+//   object-position: center;
+//   width: 100%;
+//   position: absolute;
+//   left: 0;
+//   right: 0;
+//   bottom: -1px;
+//   height: 1px;
+// `;
+
+// export default AchievementCard;

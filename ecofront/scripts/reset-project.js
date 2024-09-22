@@ -5,7 +5,6 @@
  * It moves the /app directory to /app-example and creates a new /app directory with an index.tsx and _layout.tsx file.
  * You can remove the `reset-project` script from package.json and safely delete this file after running it.
  */
-
 const fs = require('fs');
 const path = require('path');
 
