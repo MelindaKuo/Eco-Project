@@ -9,12 +9,12 @@ type LoginScreenProps = {
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      {/* Add your login form here */}
+
       <Button
         title="Login"
         onPress={() => navigation.reset({
           index: 0,
-          routes: [{ name: 'Home' }],  // Make sure 'Home' matches the name in Stack.Screen
+          routes: [{ name: 'Home' }], 
         })}
       />
     </View>

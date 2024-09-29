@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 type WelcomeScreenProps = {
@@ -8,54 +8,69 @@ type WelcomeScreenProps = {
 
 const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+
       <TouchableOpacity 
         style={styles.buttonContainerLogin} 
         onPress={() => navigation.navigate('Login')}
       >
-        <Text style={styles.buttonText}>Log In</Text>
+        <Text style={styles.buttonTextLogin}>Log In</Text>
       </TouchableOpacity>
-      
+
       <TouchableOpacity 
         style={styles.buttonContainerCreateAccount} 
         onPress={() => navigation.navigate('SignUp')}
       >
-        <Text style={styles.buttonText}>Create Account</Text>
+        <Text style={styles.buttonTextCreateAccount}>Create Account</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-end', // Shift buttons to the bottom
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    gap: 15,
-    marginBottom: 120, // Optional: Add some margin from the bottom
+    backgroundColor: '#F5F8FA',
+    paddingHorizontal: 20, 
+    paddingBottom: 100, 
   },
   buttonContainerLogin: {
-    borderColor: 'black',
-    borderWidth: 5,
+    borderColor: '#4D9FEC', 
+    borderWidth: 2,
     borderRadius: 20,
-    overflow: 'hidden',
-    width: 300,
-    height: 65,
-    justifyContent: 'center', // Center text vertically
-    alignItems: 'center', // Center text horizontally
-  },
-  buttonContainerCreateAccount: {
-    backgroundColor: '#6DB6EC', // Change this to your desired color
-    borderRadius: 20,
-    width: 300,
-    height: 65,
+    width: 280,
+    height: 60,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 15,
   },
-  buttonText: {
-    fontSize: 18, // Change text size
-    color: 'black', // Change text color for contrast
-    textAlign: 'center', // Center the text
+  buttonTextLogin: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#4D9FEC',
+    textAlign: 'center',
+  },
+  buttonContainerCreateAccount: {
+    backgroundColor: '#4D9FEC',
+    borderRadius: 20,
+    width: 280,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 40, 
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.15,
+    shadowRadius: 10,
+    elevation: 5, 
+  },
+  buttonTextCreateAccount: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#ffffff', 
+    textAlign: 'center',
   },
 });
 

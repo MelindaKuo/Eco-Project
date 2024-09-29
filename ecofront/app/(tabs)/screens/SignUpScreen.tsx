@@ -9,12 +9,11 @@ type SignUpScreenProps = {
 const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      {/* Add your signup form here */}
       <Button
         title="Create Account"
         onPress={() => navigation.reset({
           index: 0,
-          routes: [{ name: 'Home' }],  // Make sure 'Home' matches the name in Stack.Screen
+          routes: [{ name: 'Home' }],  
         })}
       />
     </View>

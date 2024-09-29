@@ -2,7 +2,7 @@
   "expo": {
     "name": "ecoproj_",
     "slug": "ecoproj_",
-    "entryPoint": "./app/screens/App.tsx",
+    "entryPoint": "./app/(tabs)/screens/App.tsx",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
