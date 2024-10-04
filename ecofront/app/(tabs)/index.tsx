@@ -8,8 +8,36 @@ import LevelWidget from '@/components/LevelWidget';
 import RecentCollectionsWidget from '@/components/RecentCollectionsWidget';
 import NavigationBar from '../../components/NavigationBar'; 
 
-export function HomeScreen() {
+import { useState } from "react";
+import { StackNavigationProp } from '@react-navigation/stack';
+
+import CustomButton from "../../components/CustomButton";
+import { useGlobalContext } from "../../context/GlobalProvider";
+
+import { signOut } from "../../lib/appwrite";
+
+type HomeScreenProps = {
+  navigation: StackNavigationProp<any, any>;
+};
+
+const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
+  //  export function HomeScreen() {
+  const [isSubmitting, setSubmitting] = useState(false);
+  const { setUser, setIsLogged } = useGlobalContext();
+
+  const logout = async () => {
+    setSubmitting(true);
+    await signOut();
+
+    setUser(null);
+    setIsLogged(false);
+
+    navigation.navigate('Welcome')
+  };
+
+
   return (
+
     <View style={styles.screenContainer}>
       <ParallaxScrollView headerBackgroundColor={{ light: '#FFFFFF', dark: '#1D3D47' }}>
         <ThemedView style={styles.titleContainer}>
@@ -35,6 +63,13 @@ export function HomeScreen() {
 
           <Widget source={require('../../assets/images/temptrashimg.jpg')} width={340} height={150} text="Second widget!" />
         </ThemedView>
+
+        <CustomButton
+        title="Sign Out"
+        handlePress={logout}
+        containerStyles="mt-28 w-60"
+        isLoading={isSubmitting}
+      />
       </ParallaxScrollView>
 
       <NavigationBar />

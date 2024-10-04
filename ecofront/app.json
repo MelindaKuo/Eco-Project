@@ -5,7 +5,7 @@
     "entryPoint": "./app/(tabs)/screens/App.tsx",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/logo-small.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -14,7 +14,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "package": "edu.dvhs.ecofront"
     },
     "android": {
       "adaptiveIcon": {
