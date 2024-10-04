@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 32,
+    // padding: 32,
 
   },
 });

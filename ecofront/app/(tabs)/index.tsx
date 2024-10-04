@@ -65,11 +65,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         </ThemedView>
 
         <CustomButton
-        title="Sign Out"
-        handlePress={logout}
-        containerStyles="mt-28 w-60"
-        isLoading={isSubmitting}
-      />
+          title="Sign Out"
+          handlePress={logout}
+          containerStyles="mt-28 w-60"
+          isLoading={isSubmitting} textStyles={undefined}      />
       </ParallaxScrollView>
 
       <NavigationBar />
@@ -92,14 +91,16 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.4,
     shadowRadius: 4,
-    gap: 25,
+    gap: 20,
+    padding: 15,
   },
   rowContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '100%',
+    width: '85%',
     gap: 17,
   },
+
 });
 
 export default HomeScreen;
