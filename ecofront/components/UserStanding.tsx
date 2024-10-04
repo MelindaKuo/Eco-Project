@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     userContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 12,
+        padding: 5,
         borderRadius: 50, 
         marginBottom: 10,
         shadowColor: '#000', 
@@ -53,8 +53,8 @@ const styles = StyleSheet.create({
         left: 10,
     },
     avatar: {
-        width: 50,
-        height: 50,
+        width: 40,
+        height: 40,
         borderRadius: 25, 
         borderWidth: 2,
         borderColor: '#B0C4DE',
