@@ -37,7 +37,7 @@ export async function createUser(email, password, username) {
       ID.unique(),
       email,
       password,
-      username
+      username,
     );
 
     if (!newAccount) throw Error;
@@ -55,6 +55,7 @@ export async function createUser(email, password, username) {
         email: email,
         username: username,
         avatar: avatarUrl,
+        score: 0,
       }
     );
 
@@ -104,6 +105,55 @@ export async function getCurrentUser() {
   } catch (error) {
     console.log(error);
     return null;
+  }
+}
+
+// Get Current User score
+export async function getCurrentUserScore() {
+  try {
+    const currentUser = await getCurrentUser();
+    if (!currentUser) throw Error;
+
+    return currentUser.score;
+  } catch (error) {
+    console.log(error);
+    return 0;
+  }
+}
+
+// add extra score to the score of current user.
+export async function addCurrentUserScore(extra) {
+  try {
+    const currentUser = await getCurrentUser();
+    if (!currentUser) throw Error;
+
+    newScore = currentUser.score + extra;
+    const result = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      currentUser.$id,
+      {"score": newScore}
+    );
+    return newScore;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+// Get all user scores order by desc
+export async function getAllScores() {
+  try {
+    const users = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      [Query.orderDesc("score")]
+    );
+    if (!users) throw Error;
+
+    return users.documents;
+  } catch (error) {
+    throw new Error(error);
   }
 }
 
