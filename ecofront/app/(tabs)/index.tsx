@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedView } from '@/components/ThemedView';
 import { Widget } from '@/components/Widget';
@@ -14,7 +14,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import CustomButton from "../../components/CustomButton";
 import { useGlobalContext } from "../../context/GlobalProvider";
 
-import { signOut } from "../../lib/appwrite";
+import { signOut, addCurrentUserScore, getAllScores, getCurrentUserScore } from "../../lib/appwrite";
 
 type HomeScreenProps = {
   navigation: StackNavigationProp<any, any>;
@@ -35,11 +35,45 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     navigation.navigate('Welcome')
   };
 
+  const testUpdate = async () => {
+    console.log("\n=========== start updating ====");
+    const curScore = await getCurrentUserScore();
+    console.log("===>current user score:" + curScore);
+
+    console.log("===>add score by 10");
+    const newScore = await addCurrentUserScore(10);
+    console.log("===>score returned:" + newScore);
+    const curScore1 = await getCurrentUserScore();
+    console.log("===>current user score:" + curScore1);
+
+    const users = await getAllScores();
+    console.log("===>total: " + users.length);
+    for (let i = 0; i < users.length; i++) {
+      console.log("===>" + i +": user:" + users[i].username + " score:" + users[i].score);
+      console.log(users[i]);
+    }
+  };
 
   return (
 
     <View style={styles.screenContainer}>
+      <View style={{ backgroundColor: 'lightblue', padding: 35 }}>
+        <TouchableOpacity 
+          style={{ position: 'absolute', right: 10, top: 45 }} 
+          onPress={logout}
+        >
+        <Text style={{ color: 'red', fontWeight: 'bold' }}>Sign Out</Text>
+        </TouchableOpacity>
+      </View>
+
       <ParallaxScrollView headerBackgroundColor={{ light: '#FFFFFF', dark: '#1D3D47' }}>
+        <CustomButton
+          title="Test Update"
+          handlePress={testUpdate}
+          containerStyles="mt-28 w-60"
+          isLoading={isSubmitting} textStyles={undefined}      
+        />
+
         <ThemedView style={styles.titleContainer}>
           <Widget source={require('../../assets/images/recyclebackgroundtemp.jpg')} width={340} height={250} text="Fact" />
 
@@ -63,12 +97,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
 
           <Widget source={require('../../assets/images/temptrashimg.jpg')} width={340} height={150} text="Second widget!" />
         </ThemedView>
-
-        <CustomButton
-          title="Sign Out"
-          handlePress={logout}
-          containerStyles="mt-28 w-60"
-          isLoading={isSubmitting} textStyles={undefined}      />
       </ParallaxScrollView>
 
       <NavigationBar />
