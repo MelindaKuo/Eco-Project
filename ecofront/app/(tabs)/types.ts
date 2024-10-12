@@ -7,5 +7,6 @@ export type RootStackParamList = {
     StatsScreen: undefined;  
     LeaderboardScreen: undefined;
     CameraScreen: undefined;  
+    FriendsScreen: undefined;
   };
   

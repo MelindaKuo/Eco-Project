@@ -10,6 +10,7 @@ import HomeScreen from '../index';
 import StatsScreen from '../StatsScreen';  
 import LeaderboardScreen from '../LeaderboardScreen';
 import CameraScreen from '../CameraScreen';   
+import FriendsScreen from '../FriendsScreen';
 import { RootStackParamList } from '../types'; 
 
 import { registerRootComponent } from 'expo';
@@ -29,6 +30,7 @@ const App: React.FC = () => {
           <Stack.Screen name="StatsScreen" component={StatsScreen} options={{ gestureEnabled: false }}  />
           <Stack.Screen name="LeaderboardScreen" component={LeaderboardScreen} options={{ gestureEnabled: false }} />
           <Stack.Screen name="CameraScreen" component={CameraScreen} options={{ gestureEnabled: false }}/>
+          <Stack.Screen name="FriendsScreen" component={FriendsScreen} options = {{gestureEnabled: false}} /> 
         </Stack.Navigator>
       </NavigationContainer>
     </GlobalProvider>
