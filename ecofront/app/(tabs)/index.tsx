@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, View , Text, TouchableOpacity} from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedView } from '@/components/ThemedView';
 import { Widget } from '@/components/Widget';
@@ -15,6 +15,7 @@ import CustomButton from "../../components/CustomButton";
 import { useGlobalContext } from "../../context/GlobalProvider";
 
 import { signOut, addCurrentUserScore, getAllScores, getCurrentUserScore } from "../../lib/appwrite";
+import Challenge from '@/components/Challenge';
 
 type HomeScreenProps = {
   navigation: StackNavigationProp<any, any>;
@@ -53,32 +54,44 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
       console.log(users[i]);
     }
   };
+  const [challenges, setChallenges] = useState([
+    { id: 1, title: 'Collect 10 plastic bottles', completed: false },
+    { id: 2, title: 'Clean a local park', completed: false },
+    { id: 3, title: 'Recycle 5 electronic devices', completed: false },
+    { id: 4, title: 'Organize a community cleanup', completed: false },
+    { id: 5, title: 'Use a reusable bag for shopping', completed: false },
+  ]);
+
+  const handleChallengeComplete = (id: number) => {
+    setChallenges(challenges.map(challenge => 
+      challenge.id === id ? { ...challenge, completed: true } : challenge
+    ));
+  };
+
 
   return (
 
     <View style={styles.screenContainer}>
-      <View style={{ backgroundColor: 'lightblue', padding: 35 }}>
-        <TouchableOpacity 
-          style={{ position: 'absolute', right: 10, top: 45 }} 
-          onPress={logout}
-        >
-        <Text style={{ color: 'red', fontWeight: 'bold' }}>Sign Out</Text>
-        </TouchableOpacity>
-      </View>
+
 
       <ParallaxScrollView headerBackgroundColor={{ light: '#FFFFFF', dark: '#1D3D47' }}>
-        <CustomButton
-          title="Test Update"
-          handlePress={testUpdate}
-          containerStyles="mt-28 w-60"
-          isLoading={isSubmitting} textStyles={undefined}      
-        />
+
 
         <ThemedView style={styles.titleContainer}>
           <Widget source={require('../../assets/images/recyclebackgroundtemp.jpg')} width={340} height={250} text="Fact" />
 
           <View style={styles.holder}>
             <RecentCollectionsWidget />
+          </View>
+
+          <View style={styles.challengesContainer}>
+            <Text style={styles.challengesTitle}>Daily Challenges</Text>
+            {challenges.map((challenge) => (
+              <Challenge
+                key={challenge.id}
+                title={challenge.title}
+                onComplete={() => handleChallengeComplete(challenge.id)} completed={false} progress={0.4} points={0}              />
+            ))}
           </View>
 
           <View style={styles.rowContainer}>
@@ -96,8 +109,25 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           </View>
 
           <Widget source={require('../../assets/images/temptrashimg.jpg')} width={340} height={150} text="Second widget!" />
+
+
+        <CustomButton 
+          title = "Sign Out"
+          handlePress={logout}
+                    containerStyles="mt-28 w-60"
+                    isLoading={isSubmitting} textStyles={undefined}  
+        />
+
+      <CustomButton
+          title="Test Update"
+          handlePress={testUpdate}
+          containerStyles="mt-28 w-60"
+          isLoading={isSubmitting} textStyles={undefined}      
+        />
         </ThemedView>
+
       </ParallaxScrollView>
+
 
       <NavigationBar />
     </View>
@@ -128,6 +158,23 @@ const styles = StyleSheet.create({
     width: '85%',
     gap: 17,
   },
+  challengesContainer: {
+    width: '100%',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 15,
+    marginTop: 20,
+  },
+  challengesTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#67ABDD',
+    marginBottom: 10,
+  },
+  challengeItem: {
+    width: '100%', 
+    
+  }
 
 });
 
