@@ -46,7 +46,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView className="bg-black h-full">
+    <SafeAreaView className="bg-white h-full">
       <ScrollView>
         <View
           className="w-full flex justify-center h-full px-4 my-6"
@@ -60,7 +60,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
             className="w-[115px] h-[34px]"
           />
 
-          <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
+          <Text className="text-2xl font-semibold text-black mt-10 font-psemibold">
             Sign Up to ECO
           </Text>
 
@@ -89,12 +89,12 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
           <CustomButton
             title="Sign Up"
             handlePress={submit}
-            containerStyles="mt-20"
+            containerStyles={{ paddingHorizontal: 20, marginTop: 100 }}
             isLoading={isSubmitting}
           />
 
           <View className="flex justify-center pt-5 flex-row gap-2">
-            <Text className="text-lg text-gray-100 font-pregular">
+            <Text className="text-lg text-black-100 font-pregular">
               Have an account already?
             </Text>
             <Link to={{ screen: 'Login' }}

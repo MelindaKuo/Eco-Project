@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { StatusBar } from "expo-status-bar";
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -23,52 +23,45 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
   });
 
   return (
-    <SafeAreaView className="bg-black h-full">
+    <SafeAreaView style={styles.safeAreaView}>
       <Loader isLoading={loading} />
 
-      <ScrollView
-        contentContainerStyle={{
-          height: "100%",
-        }}
-      >
+      <View style={styles.container}>
 
-        <View style={styles.container}>
-
+        <View style={styles.topSection}>
           <Image
             source={images.logo}
-            className="w-[130px] h-[84px]"
+            style={styles.logo}
             resizeMode="contain"
           />
 
           <Image
             source={images.turtle}
-            className="max-w-[380px] w-full h-[208px]"
+            style={styles.turtle}
             resizeMode="contain"
           />
 
-          <View className="relative mt-5">
-            <Text className="text-2xl text-white font-bold text-center">
+          <View style={styles.titleContainer}>
+            <Text style={styles.titleText}>
               Put Trash in its{"\n"}
-              Right Places with{" "}
-              <Text className="text-amber-600 text-3xl">ECO</Text>
+              <Text style={styles.highlightedText}>Right Place</Text>{" "}
+              with <Text style={styles.ecoText}>ECO</Text>
             </Text>
-
             <Image
               source={images.path}
-              className="w-[136px] h-[15px] absolute -bottom-2 -right-8 "
+              style={styles.pathImage}
               resizeMode="contain"
             />
           </View>
+        </View>
 
-          <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
-          Recycle your waste, save energy, conserve resources and preserve the nature of the world with ECO
-          </Text>
 
+        <View style={styles.bottomSection}>
           <TouchableOpacity
             style={styles.buttonContainerLogin}
             onPress={() => navigation.navigate('Login')}
           >
-            <Text style={styles.buttonText}>Sign In</Text>
+            <Text style={styles.buttonTextLogin}>Sign In</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -77,30 +70,81 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
           >
             <Text style={styles.buttonText}>Sign up</Text>
           </TouchableOpacity>
+
+          <Text style={styles.descriptionText}>
+            Recycle your waste, save energy, conserve resources, and preserve nature with ECO.
+          </Text>
         </View>
-      </ScrollView>
+      </View>
 
-      <StatusBar backgroundColor="#161622" style="light" />
-
+      <StatusBar backgroundColor="#fff" style="dark" />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeAreaView: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   container: {
-    backgroundColor: 'black',
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  topSection: {
+    flex: 2,
+    justifyContent: 'center', 
+    alignItems: 'center',
+  },
+  logo: {
+    width: 130,
+    height: 84,
+    marginBottom: 20,
+  },
+  turtle: {
+    width: '100%',
+    height: 208,
+    maxWidth: 380,
+    marginBottom: 20,
+  },
+  titleContainer: {
+    position: 'relative',
+    marginTop: 5,
+  },
+  titleText: {
+    fontSize: 26, 
+    fontWeight: '600',
+    color: '#333',
+    textAlign: 'center',
+  },
+  highlightedText: {
+    color: '#FF6347', 
+    fontSize: 28,
+    fontWeight: '700', 
+  },
+  ecoText: {
+    color: '#32CD32', 
+    fontSize: 28,
+    fontWeight: '700',
+  },
+  pathImage: {
+    width: 136,
+    height: 15,
+    position: 'absolute',
+    bottom: -10,
+    right: -10,
+  },
+  bottomSection: {
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    gap: 15,
-    marginBottom: 60, // Optional: Add some margin from the bottom
+    paddingBottom: 40, 
   },
   buttonContainerLogin: {
-    backgroundColor: '#6DB6EC', // Change this to your desired color
-    borderColor: 'white',
-    borderWidth: 5,
-
-    borderRadius: 20,
+    backgroundColor: 'transparent',
+    borderColor: '#000',         
+    borderWidth: 2,                 
+    borderRadius: 20,              
     width: 280,
     height: 60,
     justifyContent: 'center',
@@ -110,7 +154,7 @@ const styles = StyleSheet.create({
   buttonTextLogin: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#4D9FEC',
+    color: '#000',
     textAlign: 'center',
   },
   buttonContainerCreateAccount: {
@@ -120,18 +164,25 @@ const styles = StyleSheet.create({
     height: 60,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 5, 
+    marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.15,
     shadowRadius: 10,
-    elevation: 5, 
+    elevation: 5,
   },
-  buttonTextCreateAccount: {
+  buttonText: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#ffffff', 
+    color: '#fff',
     textAlign: 'center',
+  },
+  descriptionText: {
+    fontSize: 14,
+    color: '#555', 
+    textAlign: 'center',
+    marginVertical: 10,
+    paddingHorizontal: 20,
   },
 });
 
