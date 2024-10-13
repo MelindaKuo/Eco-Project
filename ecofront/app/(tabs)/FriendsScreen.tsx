@@ -7,7 +7,7 @@ interface Friend {
     id: string;
     name: string;
     avatar: any; 
-    activity: string; // Change points to activity
+    activity: string; 
     online: boolean; 
 }
 
@@ -24,7 +24,6 @@ const friendsData: Friend[] = [
     { id: '10', name: 'Daniel Lewis', avatar: require('../../assets/images/random character.png'), activity: 'Recycled 50 mins ago', online: true },
     { id: '11', name: 'Laura Hall', avatar: require('../../assets/images/random character.png'), activity: 'Recycled 1 hour ago', online: true },
     { id: '12', name: 'Matthew King', avatar: require('../../assets/images/random character.png'), activity: 'Recycled 3 hours ago', online: false },
-    // Add more friends as needed
 ];
 
 const FriendsScreen = () => {
@@ -35,7 +34,7 @@ const FriendsScreen = () => {
             <View style={styles.avatarContainer}>
                 <Image source={item.avatar} style={styles.friendAvatar} />
                 <TouchableOpacity
-                    style={[styles.statusIndicator, { backgroundColor: item.online ? '#88E1B5' : '#FFB3B3' }]} // Light green for online and light red for offline
+                    style={[styles.statusIndicator, { backgroundColor: item.online ? '#88E1B5' : '#FFB3B3' }]}
                 />
             </View>
             <View style={styles.friendInfo}>
@@ -77,13 +76,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#ffffff',
-        paddingTop: 70, // Add padding to the top for better spacing
+        paddingTop: 70,
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginBottom: 20, // Space between the title and search bar
+        marginBottom: 20, 
     },
     searchBar: {
         height: 40,
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
         height: 15,
         borderRadius: 7.5,
         borderWidth: 1,
-        borderColor: '#ffffff', // Optional: White border for better visibility
+        borderColor: '#ffffff',
     },
     friendInfo: {
         flex: 1,

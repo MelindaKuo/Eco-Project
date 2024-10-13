@@ -1,29 +1,87 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
-import NavigationBar from '../../components/NavigationBar';
-import UserStats from '../../components/UserStanding';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import NavigationBar from '@/components/NavigationBar';
+import { MaterialIcons } from '@expo/vector-icons'; 
+import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
 
-const Leaderboard: React.FC = () => {
+const LeaderboardScreen: React.FC = () => {
+  const [selectedTab, setSelectedTab] = useState<'global' | 'recyclable' | 'friends'>('global');
+
+  // Define the current user
+  const currentUser = { rank: 5, username: 'YourName', points: 1025, avatar: require('../../assets/images/random character.png'), change: -1 };
 
   const topUsers = [
-    { rank: 2, username: 'Emma', points: 1674, avatar: require('../../assets/images/random character.png') },
-    { rank: 1, username: 'Darren', points: 2430, avatar: require('../../assets/images/random character.png') },
-    { rank: 3, username: 'Jack', points: 1847, avatar: require('../../assets/images/random character.png') },
+    { rank: 2, username: 'Jackson', points: 1847, avatar: require('../../assets/images/random character.png') },
+    { rank: 1, username: 'Aidan', points: 2430, avatar: require('../../assets/images/random character.png') },
+    { rank: 3, username: 'Emma ', points: 1674, avatar: require('../../assets/images/random character.png') },
   ];
 
   const otherUsers = [
-    { rank: 4, username: 'Bob', points: 1124, avatar: require('../../assets/images/random character.png') },
-    { rank: 5, username: 'Jeff', points: 875, avatar: require('../../assets/images/random character.png') },
-    { rank: 6, username: 'Alex', points: 770, avatar: require('../../assets/images/random character.png') },
-    { rank: 7, username: 'Hana', points: 723, avatar: require('../../assets/images/random character.png') },
-    { rank: 8, username: 'Sophia', points: 659, avatar: require('../../assets/images/random character.png') },
+    { rank: 4, username: 'Sebastian', points: 1124, avatar: require('../../assets/images/random character.png'), change: -1 },
+    { rank: 5, username: 'Jason', points: 875, avatar: require('../../assets/images/random character.png'), change: +2 },
+    { rank: 6, username: 'Natalie', points: 774, avatar: require('../../assets/images/random character.png'), change: 0 },
+    { rank: 7, username: 'Evan', points: 723, avatar: require('../../assets/images/random character.png'), change: -2 },
+    { rank: 8, username: 'Hannah', points: 559, avatar: require('../../assets/images/random character.png'), change: +1 },
   ];
 
+  const addFriend = (username: string) => {
+    console.log(`${username} added as a friend!`);
+  };
+
   return (
-    <View style={styles.container}>
+    <GestureHandlerRootView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Leaderboard</Text>
+      </View>
+
+      <View style={styles.userStatsContainer}>
+        <Image source={currentUser.avatar} style={styles.avatar} />
+        <View style={styles.currentUserInfo}>
+          <Text style={styles.currentUserUsername}>{currentUser.username}</Text>
+          <Text style={styles.currentUserPoints}>{currentUser.points} pts</Text>
+        </View>
+        {currentUser.change > 0 ? (
+          <View style={styles.changeContainer}>
+            <MaterialIcons name="arrow-upward" size={20} color="green" />
+            <Text style={styles.changeText}>+{currentUser.change}</Text>
+          </View>
+        ) : currentUser.change < 0 ? (
+          <View style={styles.changeContainer}>
+            <MaterialIcons name="arrow-downward" size={20} color="red" />
+            <Text style={styles.changeText}>{currentUser.change}</Text>
+          </View>
+        ) : (
+          <View style={styles.changeContainer}>
+            <MaterialIcons name="remove" size={20} color="gray" />
+            <Text style={styles.changeText}>0</Text>
+          </View>
+        )}
+      </View>
+
+      <View style={styles.tabContainer}>
+        <TouchableOpacity
+          style={[styles.tabButton, selectedTab === 'global' && styles.activeTab]}
+          onPress={() => setSelectedTab('global')}
+        >
+          <Text style={styles.tabText}>Global</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tabButton, selectedTab === 'recyclable' && styles.activeTab]}
+          onPress={() => setSelectedTab('recyclable')}
+        >
+          <Text style={styles.tabText}>Recyclable</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tabButton, selectedTab === 'friends' && styles.activeTab]}
+          onPress={() => setSelectedTab('friends')}
+        >
+          <Text style={styles.tabText}>Friends</Text>
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.topSection}>
         {topUsers.map((user, index) => (
-          <View key={user.rank} style={[styles.topUserContainer, index === 0 ? styles.firstPlace : index === 1 ? styles.secondPlace : styles.thirdPlace]}>
+          <View key={user.rank} style={[styles.topUserContainer, index === 1 ? styles.firstPlace : index === 0 ? styles.secondPlace : styles.thirdPlace]}>
             <Image source={user.avatar} style={styles.topAvatar} />
             <Text style={styles.topUsername}>{user.username}</Text>
             <Text style={styles.topPoints}>{user.points} pts</Text>
@@ -31,79 +89,193 @@ const Leaderboard: React.FC = () => {
         ))}
       </View>
 
-      <ScrollView style={styles.scrollContainer}>
+      <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
         {otherUsers.map((user) => (
-          <UserStats
+          <Swipeable
             key={user.rank}
-            rank={user.rank}
-            username={user.username}
-            points={user.points}
-            avatar={require('../../assets/images/random character.png')} 
-          />
+            renderRightActions={() => (
+              <TouchableOpacity
+                style={styles.addFriendButton}
+                onPress={() => addFriend(user.username)}
+              >
+                <MaterialIcons name="person-add" size={30} color="#67ABDD" />
+              </TouchableOpacity>
+            )}
+          >
+            <View style={styles.userStatsContainer}>
+              <Image source={user.avatar} style={styles.avatar} />
+              <View style={{ flex: 1 }}>
+                <Text style={styles.username}>{user.username}</Text>
+                <Text style={styles.points}>{user.points} pts</Text>
+              </View>
+              {user.change > 0 ? (
+                <View style={styles.changeContainer}>
+                  <MaterialIcons name="arrow-upward" size={20} color="green" />
+                  <Text style={styles.changeText}>+{user.change}</Text>
+                </View>
+              ) : user.change < 0 ? (
+                <View style={styles.changeContainer}>
+                  <MaterialIcons name="arrow-downward" size={20} color="red" />
+                  <Text style={styles.changeText}>{user.change}</Text>
+                </View>
+              ) : (
+                <View style={styles.changeContainer}>
+                  <MaterialIcons name="remove" size={20} color="gray" />
+                  <Text style={styles.changeText}>0</Text>
+                </View>
+              )}
+            </View>
+          </Swipeable>
         ))}
       </ScrollView>
       <NavigationBar />
-    </View>
+    </GestureHandlerRootView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E6F4FA',
+    backgroundColor: '#E4F3FB',
     padding: 20,
+  },
+  header: {
+    marginTop: 40,
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#67ABDD',
+  },
+  userStatsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 15,
+    backgroundColor: '#FFF',
+    borderRadius: 10,
+    marginBottom: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 15,
+  },
+  currentUserInfo: {
+    flex: 1,
+  },
+  currentUserUsername: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#67ABDD',
+  },
+  currentUserPoints: {
+    fontSize: 14,
+    color: '#67ABDD',
+  },
+  tabContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+    backgroundColor: '#B3E0F7',
+    borderRadius: 12,
+  },
+  tabButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+  },
+  activeTab: {
+    borderBottomWidth: 3,
+    borderBottomColor: '#67ABDD',
+  },
+  tabText: {
+    color: '#67ABDD',
+    fontWeight: 'bold',
   },
   topSection: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    marginTop: 20,
     marginBottom: 20,
-    alignItems: 'flex-end',
-    paddingTop: 80,
   },
   topUserContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 20,
-    padding: 10,
-    marginHorizontal: 10,
-    width: 100,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
-    backgroundColor: '#ffffff', 
+    flex: 1,
+    marginHorizontal: 5,
+  },
+  firstPlace: {
+    height: 150,
+    backgroundColor: '#67ABDD', 
+    borderRadius: 10,
+    padding: 15,
+  },
+  secondPlace: {
+    height: 130,
+    backgroundColor: '#A0D5F3', 
+    borderRadius: 10,
+    padding: 15,
+  },
+  thirdPlace: {
+    height: 130,
+    backgroundColor: '#87C6ED',
+    borderRadius: 10,
+    padding: 15,
   },
   topAvatar: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    borderWidth: 8,
-    borderColor: '#FFD700', 
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginBottom: 5,
   },
   topUsername: {
     fontSize: 16,
-    color: '#000',
     fontWeight: 'bold',
-    textAlign: 'center',
+    color: '#FFF',
   },
   topPoints: {
     fontSize: 14,
+    color: '#FFF',
   },
   scrollContainer: {
     flex: 1,
   },
-  firstPlace: {
-    height: 140, 
-    backgroundColor: '#67ABDD',
+  addFriendButton: {
+    backgroundColor: '#E4F3FB', 
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%', 
+    width: 50, 
+    borderRadius: 10,
+    marginLeft: 10,
   },
-  secondPlace: {
-    height: 160, 
-    backgroundColor: '#88C9FA', 
+  addFriendText: {
+    color: '#FFF',
+    fontWeight: 'bold',
   },
-  thirdPlace: {
-    height: 120,
-    backgroundColor: '#BEE3FF', 
+  username: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  points: {
+    fontSize: 14,
+    color: '#67ABDD',
+  },
+  changeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  changeText: {
+    fontSize: 14,
+    marginLeft: 5,
   },
 });
 
-export default Leaderboard;
+export default LeaderboardScreen;
