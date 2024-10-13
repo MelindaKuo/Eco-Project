@@ -1,11 +1,9 @@
 import React from 'react';
-// import { View, Text, StyleSheet } from 'react-native';
-import NavigationBar from '../../components/NavigationBar';
-
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View, Modal } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import PictureModal from '../../components/Modal';
+import NavigationBar from '@/components/NavigationBar';
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -13,17 +11,12 @@ export default function App() {
   const [isModalVisible, setModalVisible] = useState(false);
   
   if (!permission) {
-    // Camera permissions are still loading.
     return <View />;
   }
 
   if (!permission.granted) {
-    // Camera permissions are not granted yet.
     return (
-      <View style={styles.container}>
-        <Text style={styles.message}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
-      </View>
+      <View style={styles.outerContainer} />
     );
   }
 
@@ -36,19 +29,27 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
-      <CameraView style={styles.camera} facing={facing}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            {/* <Text style={styles.text}>Flip Camera</Text> */}
-          </TouchableOpacity>
-          <View style={styles.captureButtonContainer}>
-            <TouchableOpacity style={styles.captureButton} onPress={handlePictureButtonPress}>
-              <View style={styles.circle} />
-            </TouchableOpacity>
+    <View style={styles.outerContainer}>
+      {/* Instruction Text */}
+      <Text style={styles.instructionText}>Take a picture of your trash!</Text>
+      
+      {/* Camera view with border */}
+      <View style={styles.cameraContainer}>
+        <CameraView style={styles.camera} facing={facing}>
+          {/* Button to toggle the camera */}
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={toggleCameraFacing} />
           </View>
-        </View>
-      </CameraView>
+        </CameraView>
+      </View>
+
+      {/* Capture button placed below the camera */}
+      <View style={styles.captureButtonContainer}>
+        <TouchableOpacity style={styles.captureButton} onPress={handlePictureButtonPress}>
+          <View style={styles.circle} />
+        </TouchableOpacity>
+      </View>
+      
       <PictureModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} />
       <NavigationBar/>
     </View>
@@ -56,37 +57,46 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  outerContainer: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
   },
-  message: {
-    textAlign: 'center',
-    paddingBottom: 10,
+  instructionText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 20, 
+  },
+  cameraContainer: {
+    width: '90%',   
+    height: '70%', 
+    borderTopWidth: 40,  
+    borderBottomWidth: 40, 
+    borderLeftWidth: 20,   
+    borderRightWidth: 20, 
+    borderColor: '#fff',   
+    backgroundColor: '#ccc', 
+    justifyContent: 'center',
+    alignItems: 'center',
+    bottom: 20,
+  
   },
   camera: {
     flex: 1,
+    width: '100%',
   },
   buttonContainer: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'flex-end', 
+    justifyContent: 'flex-end',
     backgroundColor: 'transparent',
-    margin: 64,
-  },
-  button: {
-    flex: 1,
-    // alignSelf: 'flex-end',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
   },
   captureButtonContainer: {
+    justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20, 
+    marginTop: 0, 
   },
   captureButton: {
     justifyContent: 'center',
@@ -94,10 +104,9 @@ const styles = StyleSheet.create({
     bottom: 40,
   },
   circle: {
-    width: 70,        
-    height: 70,         
-    borderRadius: 35, 
-    backgroundColor: 'white', 
-    shadowColor: '#000',  
+    width: 60,
+    height: 60,
+    borderRadius: 35,
+    backgroundColor: '#282828', 
   },
 });
