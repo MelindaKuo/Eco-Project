@@ -1,59 +1,28 @@
-
-import React from 'react';
-import { StyleSheet, View , Text, TouchableOpacity} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedView } from '@/components/ThemedView';
 import { Widget } from '@/components/Widget';
 import LevelWidget from '@/components/LevelWidget'; 
 import RecentCollectionsWidget from '@/components/RecentCollectionsWidget';
-import NavigationBar from '../../components/NavigationBar'; 
-
-import { useState } from "react";
-import { StackNavigationProp } from '@react-navigation/stack';
-
-import CustomButton from "../../components/CustomButton";
-import { useGlobalContext } from "../../context/GlobalProvider";
-
-import { signOut, addCurrentUserScore, getAllScores, getCurrentUserScore } from "../../lib/appwrite";
+import NavigationBar from '@/components/NavigationBar'; 
+import CustomButton from '@/components/CustomButton';
+import { useGlobalContext } from '@/context/GlobalProvider';
+import { signOut, addCurrentUserScore, getAllScores, getCurrentUserScore } from '@/lib/appwrite';
 import Challenge from '@/components/Challenge';
+import HowItWorksWidget from '@/components/HowItWorksWidget';
+import axios from 'axios';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 type HomeScreenProps = {
-  navigation: StackNavigationProp<any, any>;
+  navigation: any;
 };
 
+const queryClient = new QueryClient();
+
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
-  //  export function HomeScreen() {
   const [isSubmitting, setSubmitting] = useState(false);
   const { setUser, setIsLogged } = useGlobalContext();
-
-  const logout = async () => {
-    setSubmitting(true);
-    await signOut();
-
-    setUser(null);
-    setIsLogged(false);
-
-    navigation.navigate('Welcome')
-  };
-
-  const testUpdate = async () => {
-    console.log("\n=========== start updating ====");
-    const curScore = await getCurrentUserScore();
-    console.log("===>current user score:" + curScore);
-
-    console.log("===>add score by 10");
-    const newScore = await addCurrentUserScore(10);
-    console.log("===>score returned:" + newScore);
-    const curScore1 = await getCurrentUserScore();
-    console.log("===>current user score:" + curScore1);
-
-    const users = await getAllScores();
-    console.log("===>total: " + users.length);
-    for (let i = 0; i < users.length; i++) {
-      console.log("===>" + i +": user:" + users[i].username + " score:" + users[i].score);
-      console.log(users[i]);
-    }
-  };
   const [challenges, setChallenges] = useState([
     { id: 1, title: 'Collect 10 plastic bottles', completed: false },
     { id: 2, title: 'Clean a local park', completed: false },
@@ -62,24 +31,37 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     { id: 5, title: 'Use a reusable bag for shopping', completed: false },
   ]);
 
+  const logout = async () => {
+    setSubmitting(true);
+    await signOut();
+    setUser(null);
+    setIsLogged(false);
+    navigation.navigate('Welcome');
+  };
+
   const handleChallengeComplete = (id: number) => {
     setChallenges(challenges.map(challenge => 
       challenge.id === id ? { ...challenge, completed: true } : challenge
     ));
   };
 
-
   return (
-
     <View style={styles.screenContainer}>
 
-
       <ParallaxScrollView headerBackgroundColor={{ light: '#FFFFFF', dark: '#1D3D47' }}>
-
-
         <ThemedView style={styles.titleContainer}>
-          <Widget source={require('../../assets/images/recyclebackgroundtemp.jpg')} width={340} height={250} text="Fact" />
-
+          <View style={styles.widgetContainer}>
+            {/* Widget Component */}
+            <Widget source={require('@/assets/images/recyclebackgroundtemp.jpg')} width={340} height={250} text={''} />
+            
+            {/* Overlay Text */}
+            <View style={styles.overlayTextContainer}>
+              <Text style={styles.largeText}>50</Text>
+              <Text style={styles.smallText}>Animals Saved Today </Text>
+              <Text style = {styles.smallText}>by Revita Users</Text>
+            </View>
+          </View>
+          
           <View style={styles.holder}>
             <RecentCollectionsWidget />
           </View>
@@ -90,49 +72,36 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
               <Challenge
                 key={challenge.id}
                 title={challenge.title}
-                onComplete={() => handleChallengeComplete(challenge.id)} completed={false} progress={0.4} points={0}              />
+                onComplete={() => handleChallengeComplete(challenge.id)} 
+                completed={false} 
+                progress={0.4} 
+                points={0} 
+              />
             ))}
           </View>
-
-          <View style={styles.rowContainer}>
-            <Widget source={require('../../assets/images/trash bac.jpg')} width={160} height={150} text="Second widget!" />
-            <Widget source={require('../../assets/images/trash bac.jpg')} width={160} height={150} text="Second widget!" />
-          </View>
-
-          <View style={styles.holder}>
-            <LevelWidget />
-          </View>
-
-          <View style={styles.holder}>
-            <Widget source={require('../../assets/images/whitebackground.jpg')} width={340} height={250} text="Cleanup Opportunities" />
-            <Widget source={require('../../assets/images/whitebackground.jpg')} width={340} height={250} text="How This Works" />
-          </View>
-
-          <Widget source={require('../../assets/images/temptrashimg.jpg')} width={340} height={150} text="Second widget!" />
-
-
-        <CustomButton 
-          title = "Sign Out"
-          handlePress={logout}
-                    containerStyles="mt-28 w-60"
-                    isLoading={isSubmitting} textStyles={undefined}  
-        />
-
-      <CustomButton
-          title="Test Update"
-          handlePress={testUpdate}
-          containerStyles="mt-28 w-60"
-          isLoading={isSubmitting} textStyles={undefined}      
-        />
+          
+          <LevelWidget />
+          <HowItWorksWidget />
+          
+          <CustomButton 
+            title="Sign Out"
+            handlePress={logout}
+            containerStyles="mt-28 w-60"
+            isLoading={isSubmitting} 
+            textStyles={undefined}  
+          />
         </ThemedView>
-
       </ParallaxScrollView>
-
-
       <NavigationBar />
     </View>
   );
-}
+};
+
+const HomeScreenWrapper: React.FC<HomeScreenProps> = (props) => (
+  <QueryClientProvider client={queryClient}>
+    <HomeScreen {...props} />
+  </QueryClientProvider>
+);
 
 const styles = StyleSheet.create({
   screenContainer: {
@@ -144,6 +113,31 @@ const styles = StyleSheet.create({
     gap: 25,
     marginTop: 50,
   },
+  widgetContainer: {
+    width: 340,
+    height: 250,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  overlayTextContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    top: '20%',
+    width: '100%',
+  },
+  largeText: {
+    fontSize: 90,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
+  },
+  smallText: {
+    fontSize: 14,
+    color: '#fff',
+    marginTop: 5,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
   holder: {
     shadowColor: '#6DB6EC',
     shadowOffset: { width: 0, height: 5 },
@@ -151,12 +145,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     gap: 20,
     padding: 15,
-  },
-  rowContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '85%',
-    gap: 17,
   },
   challengesContainer: {
     width: '100%',
@@ -171,11 +159,6 @@ const styles = StyleSheet.create({
     color: '#67ABDD',
     marginBottom: 10,
   },
-  challengeItem: {
-    width: '100%', 
-    
-  }
-
 });
 
-export default HomeScreen;
+export default HomeScreenWrapper;

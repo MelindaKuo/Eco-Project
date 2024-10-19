@@ -29,23 +29,24 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
       <View style={styles.container}>
 
         <View style={styles.topSection}>
-          <Image
+          {/* <Image
             source={images.logo}
             style={styles.logo}
             resizeMode="contain"
-          />
+          /> */}
 
-          <Image
+          {/* <Image
             source={images.turtle}
             style={styles.turtle}
             resizeMode="contain"
-          />
+          /> */}
+          <Image source = {images.RevitaLogo} style = {styles.turtle} resizeMode = "contain" />
 
           <View style={styles.titleContainer}>
             <Text style={styles.titleText}>
               Put Trash in its{"\n"}
               <Text style={styles.highlightedText}>Right Place</Text>{" "}
-              with <Text style={styles.ecoText}>ECO</Text>
+              with <Text style={styles.ecoText}>Revita</Text>
             </Text>
             <Image
               source={images.path}
@@ -72,7 +73,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
           </TouchableOpacity>
 
           <Text style={styles.descriptionText}>
-            Recycle your waste, save energy, conserve resources, and preserve nature with ECO.
+            Recycle your waste, save energy, conserve resources, and preserve nature with Revita.
           </Text>
         </View>
       </View>
@@ -103,9 +104,11 @@ const styles = StyleSheet.create({
   },
   turtle: {
     width: '100%',
-    height: 208,
+    height: 300,
     maxWidth: 380,
     marginBottom: 20,
+    alignContent: 'center',
+    left: 10,
   },
   titleContainer: {
     position: 'relative',

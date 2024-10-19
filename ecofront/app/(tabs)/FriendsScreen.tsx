@@ -28,6 +28,7 @@ const friendsData: Friend[] = [
 
 const FriendsScreen = () => {
     const [searchTerm, setSearchTerm] = useState('');
+    const [showRequests, setShowRequests] = useState(false);
 
     const renderFriendItem = ({ item }: { item: Friend }) => (
         <TouchableOpacity style={styles.friendItem}>
@@ -55,12 +56,29 @@ const FriendsScreen = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Melinda's Friends</Text>
-            <TextInput
-                style={styles.searchBar}
-                placeholder="Search Friends..."
-                value={searchTerm}
-                onChangeText={setSearchTerm}
-            />
+            <View style={styles.toggleContainer}>
+                <TouchableOpacity 
+                    style={[styles.toggleButton, { backgroundColor: showRequests ? '#67ABDD' : '#f0f0f0', borderColor: showRequests ? '#67ABDD' : '#ccc' }]} 
+                    onPress={() => setShowRequests(true)}
+                >
+                    <Text style={[styles.toggleText, { color: showRequests ? '#fff' : '#333' }]}>Friend Requests</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                    style={[styles.toggleButton, { backgroundColor: !showRequests ? '#67ABDD' : '#f0f0f0', borderColor: !showRequests ? '#67ABDD' : '#ccc' }]} 
+                    onPress={() => setShowRequests(false)}
+                >
+                    <Text style={[styles.toggleText, { color: !showRequests ? '#fff' : '#333' }]}>Friends List</Text>
+                </TouchableOpacity>
+            </View>
+            <View style={styles.searchBarContainer}>
+                <Ionicons name="search" size={20} color="#ccc" style={styles.searchIcon} />
+                <TextInput
+                    style={styles.searchBar}
+                    placeholder="Search for Friends"
+                    value={searchTerm}
+                    onChangeText={setSearchTerm}
+                />
+            </View>
             <FlatList
                 data={filteredFriends}
                 renderItem={renderFriendItem}
@@ -84,14 +102,38 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 20, 
     },
-    searchBar: {
-        height: 40,
+    toggleContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginBottom: 20,
+    },
+    toggleButton: {
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 20,
+        marginHorizontal: 5,
+        borderWidth: 1,
+    },
+    toggleText: {
+        fontSize: 16,
+    },
+    searchBarContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
         borderColor: '#ccc',
         borderWidth: 1,
         borderRadius: 20,
-        paddingHorizontal: 15,
         marginHorizontal: 20,
         marginBottom: 20,
+        paddingHorizontal: 10,
+    },
+    searchIcon: {
+        marginRight: 5,
+    },
+    searchBar: {
+        height: 40,
+        flex: 1,
+        paddingHorizontal: 10,
     },
     list: {
         padding: 20,

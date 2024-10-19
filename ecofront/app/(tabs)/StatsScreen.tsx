@@ -9,6 +9,7 @@ import { RootStackParamList } from '../(tabs)/types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 
+
 type StatsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'StatsScreen'>;
 type StatsScreenProps = {
     navigation: StatsScreenNavigationProp;
@@ -56,10 +57,14 @@ const StatsScreen: React.FC<StatsScreenProps> = () => {
                             </TouchableOpacity>
                         ))}
                     </View>
+                    {/* <TouchableOpacity style={styles.customizeAvatarButton} onPress={handleCustomizeAvatarPress}>
+                        <Text style={styles.customizeAvatarText}>Customize Avatar</Text>
+                    </TouchableOpacity> */}
                 </View>
+                
 
                 <View style={styles.achievementsContainer}>
-                    <Text style={styles.badgesTitle}>Achievements</Text>
+                    <Text style={styles.badgesTitle}>Badges</Text>
                     <View style={styles.badgesContainer}>
                         {['🐾', '🏆', '🌱', '🌊'].map((icon, index) => (
                             <TouchableOpacity key={index} style={styles.badge}>
@@ -67,20 +72,54 @@ const StatsScreen: React.FC<StatsScreenProps> = () => {
                             </TouchableOpacity>
                         ))}
                     </View>
+                    <Text style={styles.badgesTitle}>Trash Collections</Text>
 
                     <View style={styles.trashSortedContainer}>
-                        {[45, 25, 28].map((count, index) => (
-                            <View key={index} style={styles.trashStatCircle}>
-                                <Image source={require('../../assets/images/recycle.png')} style={styles.trashImage} />
+                        <View style = {styles.trashStatCircle}>
+                            <Image source={require('../../assets/images/compost.png')} style={styles.trashImage} />
                                 <View style={styles.badgeCountCircle}>
-                                    <Text style={styles.badgeCount}>{count}</Text>
+                                    <Text style={styles.badgeCount}>45</Text>
                                 </View>
-                            </View>
-                        ))}
+                        </View>
+                        <View style = {styles.trashStatCircle}>
+                            <Image source={require('../../assets/images/recycle.png')} style={styles.trashImage} />
+                                <View style={styles.badgeCountCircle}>
+                                    <Text style={styles.badgeCount}>25</Text>
+                                </View>
+                        </View>
+                        <View style = {styles.trashStatCircle}>
+                            <Image source={require('../../assets/images/trashStats.png')} style={styles.trashImage} />
+                                <View style={styles.badgeCountCircle}>
+                                    <Text style={styles.badgeCount}>23</Text>
+                                </View>
+                        </View>
+                        
                     </View>
+                    <Text style={styles.badgesTitle}>Animals Saved</Text>
 
                     <View style={styles.animalsSavedContainer}>
-                        {[4, 3, '🐢'].map((count, index) => (
+                        <View style = {styles.animalStatCircle}>
+                            <Image source={require('../../assets/images/fish.png')} style={styles.trashImage} />
+                            {/* <Text style={styles.statValue}>{count}</Text> */}
+                            <View style={styles.badgeCountCircle}>
+                                    <Text style={styles.badgeCount}>4</Text>
+                            </View>
+                        </View>
+                        <View style = {styles.animalStatCircle}>
+                            <Image source={require('../../assets/images/dolphin.png')} style={styles.trashImage} />
+                            {/* <Text style={styles.statValue}>{count}</Text> */}
+                            <View style={styles.badgeCountCircle}>
+                                    <Text style={styles.badgeCount}>4</Text>
+                            </View>
+                        </View>
+                        <View style = {styles.animalStatCircle}>
+                            <Image source={require('../../assets/images/turtle.png')} style={styles.trashImage} />
+                            {/* <Text style={styles.statValue}>{count}</Text> */}
+                            <View style={styles.badgeCountCircle}>
+                                    <Text style={styles.badgeCount}>4</Text>
+                            </View>
+                        </View>
+                        {/* {[4, 3, '🐢'].map((count, index) => (
                             <View key={index} style={styles.animalStatCircle}>
                                 {typeof count === 'number' ? (
                                     <Image source={require('../../assets/images/dolphin.png')} style={styles.trashImage} />
@@ -91,7 +130,7 @@ const StatsScreen: React.FC<StatsScreenProps> = () => {
                                     <Text style={styles.badgeCount}>{count}</Text>
                                 </View>
                             </View>
-                        ))}
+                        ))} */}
                     </View>
 
                     <View style={styles.additionalStatsContainer}>
@@ -104,7 +143,7 @@ const StatsScreen: React.FC<StatsScreenProps> = () => {
                                     strokeWidth={7}
                                     strokeColor="#3498db" 
                                 />
-                                <Text style={styles.statLabel}>Avg Score</Text>
+                                <Text style={styles.addstatLabel}>Score/Total</Text>
                             </View>
                             <View style={styles.statCircle}>
                                 <CircularProgress 
@@ -113,7 +152,7 @@ const StatsScreen: React.FC<StatsScreenProps> = () => {
                                     strokeWidth={7}
                                     strokeColor="#3498db" 
                                 />
-                                <Text style={styles.statLabel}>Total Trash</Text>
+                                <Text style={styles.addstatLabel}>Trash/Total</Text>
                             </View>
                             <View style={styles.statCircle}>
                                 <CircularProgress 
@@ -122,7 +161,7 @@ const StatsScreen: React.FC<StatsScreenProps> = () => {
                                     strokeWidth={7}
                                     strokeColor="#3498db" 
                                 />
-                                <Text style={styles.statLabel}>Volunteering</Text>
+                                <Text style={styles.addstatLabel}>Volunteering</Text>
                             </View>
                         </View>
 
@@ -134,7 +173,16 @@ const StatsScreen: React.FC<StatsScreenProps> = () => {
                                     strokeWidth={7}
                                     strokeColor="#3498db" 
                                 />
-                                <Text style={styles.statLabel}>Daily Goal</Text>
+                                <Text style={styles.addstatLabel}>Daily Goal</Text>
+                            </View>
+                            <View style={styles.statCircle}>
+                                <CircularProgress 
+                                    size={70}
+                                    progress={2}
+                                    strokeWidth={7}
+                                    strokeColor="#3498db" 
+                                />
+                                <Text style={styles.addstatLabel}>Rank</Text>
                             </View>
                             <View style={styles.statCircle}>
                                 <CircularProgress 
@@ -143,7 +191,7 @@ const StatsScreen: React.FC<StatsScreenProps> = () => {
                                     strokeWidth={7}
                                     strokeColor="#3498db" 
                                 />
-                                <Text style={styles.statLabel}>Impact</Text>
+                                <Text style={styles.addstatLabel}>Impact</Text>
                             </View>
                         </View>
                     </View>
@@ -152,6 +200,8 @@ const StatsScreen: React.FC<StatsScreenProps> = () => {
                         <Text>Trash Collected This Week</Text>
                         <FrequencyChart />
                     </View>
+
+
                     <TouchableOpacity style={styles.shareButton}>
                         <Text style={styles.shareButtonText}>Share Achievements</Text>
                     </TouchableOpacity>
@@ -178,6 +228,7 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 30,
         borderBottomRightRadius: 30,
     },
+
     profileContainer: {
         alignItems: 'center',
         marginBottom: 20,
@@ -236,8 +287,13 @@ const styles = StyleSheet.create({
         color: '#333',
         textAlign: 'center',
     },
+    addstatLabel:{
+        top: 10,
+        fontSize: 9,
+    },
     achievementsContainer: {
         padding: 20,
+
         width: '100%',
         alignItems: 'center',
         top: -50,
@@ -247,6 +303,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         width: '100%',
         marginBottom: 10,
+        paddingTop: 20,
     },
     badge: {
         backgroundColor: '#ffffff',
@@ -295,14 +352,16 @@ const styles = StyleSheet.create({
     badgesTitle: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#ffffff',
+        color: '#67ABDD',
         marginBottom: 10,
+        top: 10,
     },
     trashSortedContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
         marginTop: 10,
+        paddingTop: 15,
     },
     trashStatCircle: {
         backgroundColor: '#ffffff',
@@ -311,22 +370,25 @@ const styles = StyleSheet.create({
         height: 80,
         justifyContent: 'center',
         alignItems: 'center',
-        shadowColor: '#67ABDD',
-        shadowOffset: { width: 8, height: 8 },
-        shadowOpacity: 0.2,
-        shadowRadius: 3,
-        elevation: 5,
+        // shadowColor: '#67ABDD',
+        // shadowOffset: { width: 8, height: 8 },
+        // shadowOpacity: 0.2,
+        // shadowRadius: 3,
+        // elevation: 5,
+        borderColor: '#67ABDD',
+        borderWidth: 5,
         marginHorizontal: 10,
     },
     trashImage: {
-        width: 30,
-        height: 30,
+        width: 40,
+        height: 40,
     },
     animalsSavedContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
         marginTop: 10,
+        paddingTop: 15,
     },
     animalStatCircle: {
         backgroundColor: '#ffffff',
@@ -351,6 +413,7 @@ const styles = StyleSheet.create({
         padding: 20,
         width: '100%',
         alignItems: 'center',
+        marginVertical: 20,
     },
     additionalStatsTitle: {
         fontSize: 20,
@@ -362,7 +425,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
-        marginVertical: 10, // Space between rows
+        marginVertical: 20, // Space between rows
     },
     shareButton: {
         backgroundColor: '#67ABDD',
@@ -384,6 +447,33 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255, 255, 255, 0.3)',
         borderRadius: 20,
         padding: 10,
+    },
+    timelineContainer: {
+        marginVertical: 10,
+        padding: 15,
+        backgroundColor: '#f9f9f9',
+        borderRadius: 10,
+        elevation: 2,
+    },
+    timelineTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    timelineItem: {
+        fontSize: 16,
+        color: '#555',
+    },
+    customizeAvatarButton: {
+        backgroundColor: '#67ABDD',
+        borderRadius: 20,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        marginTop: 10,
+    },
+    customizeAvatarText: {
+        color: '#FFFFFF',
+        fontWeight: 'bold',
+        fontSize: 16,
     },
 });
 

@@ -1,98 +1,209 @@
-import React, { useState, useRef } from 'react';
-import { Camera, CameraType, CameraCapturedPicture, useCameraPermissions } from 'expo-camera'; 
-import { StyleSheet, TouchableOpacity, View, Text, Image } from 'react-native';
-import PictureModal from '../../components/Modal';
+
+
+
+import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
+import { useState, useRef } from 'react';
+import { StyleSheet, TouchableOpacity, View, Text, Image, Alert } from 'react-native';
 import NavigationBar from '@/components/NavigationBar';
 
-export default function CameraScreen() {
+const API_URL = ''; 
+
+export default function App() {
+  const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
-  const [isModalVisible, setModalVisible] = useState(false);
   const [imageUri, setImageUri] = useState<string | null>(null);
-  // @ts-ignore
-  const cameraRef = useRef<Camera | null>(null);
+  const cameraRef = useRef<CameraView | null>(null); 
 
   if (!permission) {
+ 
     return <View />;
   }
 
   if (!permission.granted) {
+
     return (
-      <View style={styles.outerContainer}>
-        <Text>No access to camera</Text>
+      <View style={styles.container}>
+        <Text style={styles.message}>We need your permission to show the camera</Text>
+        <TouchableOpacity onPress={requestPermission} style={styles.grantButton}>
+          <Text style={styles.grantButtonText}>Grant Permission</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 
-  const handlePictureButtonPress = async () => {
+  const takePicture = async () => {
     if (cameraRef.current) {
       const photo = await cameraRef.current.takePictureAsync();
-      console.log(photo.uri);
-      setImageUri(photo.uri);
-      setModalVisible(true);
+      console.log('Picture taken:', photo.uri);
+      setImageUri(photo.uri); 
     }
   };
 
-  return (
-    
-    <View style={styles.outerContainer}>
-      <Text style={styles.instructionText}>Take a picture of your trash!</Text>
-      
-      <View style={styles.cameraContainer}>
-        {/* @ts-ignore */}
-        <Camera style={styles.camera} ref={cameraRef}>
-        </Camera>
-      </View>
+  const handleClosePreview = () => {
+    setImageUri(null); 
+  };
 
-      <View style={styles.captureButtonContainer}>
-        <TouchableOpacity style={styles.captureButton} onPress={handlePictureButtonPress}>
-          <View style={styles.circle} />
-        </TouchableOpacity>
-      </View>
+  // const handleProceed = async () => {
+  //   if (imageUri) {
+  //     const formData = new FormData();
+  //     formData.append('file', {
+  //       uri: imageUri,
+  //       name: 'image.jpg',
+  //       type: 'image/jpeg',
+  //     });
       
-      {imageUri && <Image source={{ uri: imageUri }} style={{ width: 100, height: 100 }} />}
-      
-      <PictureModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} />
+  //     try {
+  //       const response = await fetch(`${API_URL}classify/`, {
+  //         method: 'POST',
+  //         body: formData,
+  //       });
+        
+  
+  //       const text = await response.text(); 
+  //       console.log('Raw response:', text); 
+  
+  //       if (!response.ok) {
+  //         const errorData = JSON.parse(text); 
+  //         throw new Error(errorData.detail || 'Network response was not ok');
+  //       }
+  
+  //       const result = JSON.parse(text); 
+  //       console.log('Response from API:', result);
+  //       Alert.alert('Prediction Result', `Predicted: ${result.prediction}`);
+  //     } catch (error) {
+  //       console.error('Error sending image:', error);
+  //       Alert.alert('Error', error.message || 'Failed to send image to API');
+  //     }
+  //   } else {
+  //     Alert.alert('Error', 'No image captured. Please take a picture first.');
+  //   }
+  // };
+  
+  
+  
+  
+  
+
+  return (
+    <View style={styles.container}>
+      <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={takePicture}>
+            <View style={styles.circle} />
+          </TouchableOpacity>
+        </View>
+      </CameraView>
+
+      {imageUri && (
+        <View style={styles.imagePreviewContainer}>
+          <View style={styles.polaroid}>
+            <Image source={{ uri: imageUri }} style={styles.capturedImage} />
+            <TouchableOpacity style={styles.closeButton} onPress={handleClosePreview}>
+              <Text style={styles.buttonText}>X</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.proceedButton} onPress={handleProceed}>
+              <Text style={styles.buttonText}>→</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+
       <NavigationBar />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  outerContainer: {
+  container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center', 
     backgroundColor: '#fff',
   },
-  instructionText: {
+  message: {
+    textAlign: 'center',
+    paddingBottom: 10,
+  },
+  grantButton: {
+    backgroundColor: '#282828',
+    padding: 10,
+    borderRadius: 5,
+  },
+  grantButtonText: {
+    color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 20, 
-  },
-  cameraContainer: {
-    width: '90%',   
-    height: '70%', 
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   camera: {
     flex: 1,
+    width: '100%', 
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+    margin: 64,
+  },
+  button: {
+    flex: 1,
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+  },
+  capturedImage: {
     width: '100%',
-  },
-  captureButtonContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 0, 
-  },
-  captureButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    height: '100%', 
+    borderRadius: 10, 
   },
   circle: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#282828', 
+    backgroundColor: '#fff',
+    bottom: 70,
+  },
+  imagePreviewContainer: {
+    position: 'absolute',
+    top: '30%', 
+    left: '50%', 
+    transform: [{ translateX: -150 }, { translateY: -100 }], 
+    width: 300, 
+    height: 400, 
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000, 
+  },
+  polaroid: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 10,
+    shadowColor: '#000', 
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    width: '100%', 
+    height: '100%', 
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: 10,
+    borderRadius: 5,
+  },
+  proceedButton: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 24,
   },
 });

@@ -55,13 +55,13 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
           }}
         >
           <Image
-            source={images.logo}
-            resizeMode="contain"
-            className="w-[115px] h-[34px]"
+            source={images.RevitaLogo}
+            resizeMode="start"
+            className="w-[80px] h-[80px]"
           />
 
           <Text className="text-2xl font-semibold text-black mt-10 font-psemibold">
-            Sign Up to ECO
+            Sign Up to Revita
           </Text>
 
           <FormField
