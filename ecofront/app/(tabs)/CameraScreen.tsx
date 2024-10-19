@@ -1,57 +1,58 @@
-import React from 'react';
-import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import { useState } from 'react';
-import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { Camera, CameraType, CameraCapturedPicture, useCameraPermissions } from 'expo-camera'; 
+import { StyleSheet, TouchableOpacity, View, Text, Image } from 'react-native';
 import PictureModal from '../../components/Modal';
 import NavigationBar from '@/components/NavigationBar';
 
-export default function App() {
-  const [facing, setFacing] = useState<CameraType>('back');
+export default function CameraScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [isModalVisible, setModalVisible] = useState(false);
-  
+  const [imageUri, setImageUri] = useState<string | null>(null);
+  // @ts-ignore
+  const cameraRef = useRef<Camera | null>(null);
+
   if (!permission) {
     return <View />;
   }
 
   if (!permission.granted) {
     return (
-      <View style={styles.outerContainer} />
+      <View style={styles.outerContainer}>
+        <Text>No access to camera</Text>
+      </View>
     );
   }
 
-  function toggleCameraFacing() {
-    setFacing(current => (current === 'back' ? 'front' : 'back'));
-  }
-
-  function handlePictureButtonPress() {
-    setModalVisible(true);
-  }
+  const handlePictureButtonPress = async () => {
+    if (cameraRef.current) {
+      const photo = await cameraRef.current.takePictureAsync();
+      console.log(photo.uri);
+      setImageUri(photo.uri);
+      setModalVisible(true);
+    }
+  };
 
   return (
+    
     <View style={styles.outerContainer}>
-      {/* Instruction Text */}
       <Text style={styles.instructionText}>Take a picture of your trash!</Text>
       
-      {/* Camera view with border */}
       <View style={styles.cameraContainer}>
-        <CameraView style={styles.camera} facing={facing}>
-          {/* Button to toggle the camera */}
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={toggleCameraFacing} />
-          </View>
-        </CameraView>
+        {/* @ts-ignore */}
+        <Camera style={styles.camera} ref={cameraRef}>
+        </Camera>
       </View>
 
-      {/* Capture button placed below the camera */}
       <View style={styles.captureButtonContainer}>
         <TouchableOpacity style={styles.captureButton} onPress={handlePictureButtonPress}>
           <View style={styles.circle} />
         </TouchableOpacity>
       </View>
       
+      {imageUri && <Image source={{ uri: imageUri }} style={{ width: 100, height: 100 }} />}
+      
       <PictureModal isVisible={isModalVisible} onClose={() => setModalVisible(false)} />
-      <NavigationBar/>
+      <NavigationBar />
     </View>
   );
 }
@@ -72,26 +73,12 @@ const styles = StyleSheet.create({
   cameraContainer: {
     width: '90%',   
     height: '70%', 
-    borderTopWidth: 40,  
-    borderBottomWidth: 40, 
-    borderLeftWidth: 20,   
-    borderRightWidth: 20, 
-    borderColor: '#fff',   
-    backgroundColor: '#ccc', 
     justifyContent: 'center',
     alignItems: 'center',
-    bottom: 20,
-  
   },
   camera: {
     flex: 1,
     width: '100%',
-  },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-    backgroundColor: 'transparent',
   },
   captureButtonContainer: {
     justifyContent: 'center',
@@ -101,12 +88,11 @@ const styles = StyleSheet.create({
   captureButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    bottom: 40,
   },
   circle: {
     width: 60,
     height: 60,
-    borderRadius: 35,
+    borderRadius: 30,
     backgroundColor: '#282828', 
   },
 });

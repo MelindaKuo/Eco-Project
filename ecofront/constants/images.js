@@ -5,5 +5,6 @@ import logo from "../assets/images/logo.png";
 import logoSmall from "../assets/images/logo-small.png";
 import empty from "../assets/images/empty.png";
 import turtle from "../assets/images/turtle.png";
+import RevitaLogo from "../assets/images/RevitaLogo.png"
 
-export default { profile, thumbnail, path, logo, logoSmall, empty, turtle };
+export default { profile, thumbnail, path, logo, logoSmall, empty, turtle , RevitaLogo};
